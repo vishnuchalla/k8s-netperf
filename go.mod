@@ -3,9 +3,9 @@ module github.com/jtaleric/k8s-netperf
 go 1.18
 
 require (
+	github.com/elastic/go-elasticsearch/v7 v7.13.1
 	github.com/google/uuid v1.1.2
 	github.com/montanaflynn/stats v0.6.6
-	github.com/opensearch-project/opensearch-go v1.1.0
 	github.com/openshift/client-go v0.0.0-20221213131518-7aec8d54188a
 	github.com/prometheus/client_golang v1.14.0
 	github.com/prometheus/common v0.41.0
@@ -41,6 +41,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/openshift/api v0.0.0-20230111143458-54592eea5539 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/vishnuchalla/perfscale-go-commons v0.0.0-20230402185410-82fb3a588f46 // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/oauth2 v0.5.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect

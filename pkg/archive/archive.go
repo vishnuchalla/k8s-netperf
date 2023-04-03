@@ -1,12 +1,8 @@
 package archive
 
 import (
-	"context"
-	"crypto/tls"
 	"encoding/csv"
-	"encoding/json"
 	"fmt"
-	"net/http"
 	"os"
 	"strconv"
 	"strings"
@@ -15,11 +11,11 @@ import (
 	"github.com/jtaleric/k8s-netperf/pkg/logging"
 	"github.com/jtaleric/k8s-netperf/pkg/metrics"
 	result "github.com/jtaleric/k8s-netperf/pkg/results"
-	"github.com/opensearch-project/opensearch-go"
-	"github.com/opensearch-project/opensearch-go/opensearchapi"
+	"github.com/vishnuchalla/perfscale-go-commons/logger"
+	"github.com/vishnuchalla/perfscale-go-commons/indexers"
 )
 
-const index = "k8s-netperf"
+const index = "k8s-netperf-test"
 
 // Doc struct of the JSON document to be indexed
 type Doc struct {
@@ -41,19 +37,27 @@ type Doc struct {
 }
 
 // Connect returns a client connected to the desired cluster.
-func Connect(url string, skip bool) (*opensearch.Client, error) {
-	config := opensearch.Config{
-		Addresses: []string{url},
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: skip},
-		},
+func Connect(url string, skip bool) (*indexers.Indexer, error) {
+	var err error
+	var indexer *indexers.Indexer
+	var indexerConfig indexers.IndexerConfig
+	indexerConfig = indexers.IndexerConfig{
+		Type: "elastic",
+		ESServers: []string{url},
+		DefaultIndex: index,
+		Port: 0,
+		InsecureSkipVerify: true,
+    	Enabled: true,
+		MetricsDirectory: "collected-metrics",
+		TarballName: "k8s-netperf-metrics.tgz",
 	}
-	client, err := opensearch.NewClient(config)
+	indexer, err = indexers.NewIndexer(indexerConfig)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to connect OpenSearch")
+		logger.Fatalf("%v indexer: %v", indexerConfig.Type, err.Error())
+		return nil, fmt.Errorf("Failure while connnecting to ES")
 	}
-	logging.Infof("Connected to : %s\n", config.Addresses)
-	return client, nil
+	logging.Infof("Connected to : %s\n", url)
+	return indexer, nil
 }
 
 // BuildDocs returns the documents that need to be indexed or an error.
@@ -91,25 +95,13 @@ func BuildDocs(sr result.ScenarioResults, uuid string) ([]Doc, error) {
 }
 
 // IndexDocs indexes results from k8s-netperf returns failures if any happen.
-func IndexDocs(client *opensearch.Client, docs []Doc) error {
+func IndexDocs(indexer *indexers.Indexer, docs []Doc) error {
 	logging.Infof("Attempting to index %d documents", len(docs))
+	var indexedDocs []interface{}
 	for _, doc := range docs {
-		jdoc, err := json.Marshal(doc)
-		if err != nil {
-			return err
-		}
-		body := strings.NewReader(string(jdoc))
-		logging.Debug(body)
-		r := opensearchapi.IndexRequest{
-			Index: index,
-			Body:  body,
-		}
-		resp, err := r.Do(context.Background(), client)
-		if err != nil {
-			return err
-		}
-		defer resp.Body.Close()
+		indexedDocs = append(indexedDocs, interface{}(doc))
 	}
+	(*indexer).Index(indexedDocs, indexers.IndexingOpts{MetricName: "test-metric", JobName: "test-job"})
 	return nil
 }
 
