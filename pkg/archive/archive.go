@@ -8,11 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/jtaleric/k8s-netperf/pkg/logging"
 	"github.com/jtaleric/k8s-netperf/pkg/metrics"
 	result "github.com/jtaleric/k8s-netperf/pkg/results"
-	"github.com/vishnuchalla/perfscale-go-commons/logger"
 	"github.com/vishnuchalla/perfscale-go-commons/indexers"
+	"github.com/vishnuchalla/perfscale-go-commons/logger"
 )
 
 const index = "k8s-netperf-test"
@@ -42,21 +41,21 @@ func Connect(url string, skip bool) (*indexers.Indexer, error) {
 	var indexer *indexers.Indexer
 	var indexerConfig indexers.IndexerConfig
 	indexerConfig = indexers.IndexerConfig{
-		Type: "elastic",
-		ESServers: []string{url},
-		DefaultIndex: index,
-		Port: 0,
+		Type:               "elastic",
+		ESServers:          []string{url},
+		DefaultIndex:       index,
+		Port:               0,
 		InsecureSkipVerify: true,
-    	Enabled: true,
-		MetricsDirectory: "collected-metrics",
-		TarballName: "k8s-netperf-metrics.tgz",
+		Enabled:            true,
+		MetricsDirectory:   "collected-metrics",
+		TarballName:        "k8s-netperf-metrics.tgz",
 	}
 	indexer, err = indexers.NewIndexer(indexerConfig)
 	if err != nil {
 		logger.Fatalf("%v indexer: %v", indexerConfig.Type, err.Error())
 		return nil, fmt.Errorf("Failure while connnecting to ES")
 	}
-	logging.Infof("Connected to : %s\n", url)
+	logger.Infof("Connected to : %s\n", url)
 	return indexer, nil
 }
 
@@ -96,7 +95,7 @@ func BuildDocs(sr result.ScenarioResults, uuid string) ([]Doc, error) {
 
 // IndexDocs indexes results from k8s-netperf returns failures if any happen.
 func IndexDocs(indexer *indexers.Indexer, docs []Doc) error {
-	logging.Infof("Attempting to index %d documents", len(docs))
+	logger.Infof("Attempting to index %d documents", len(docs))
 	var indexedDocs []interface{}
 	for _, doc := range docs {
 		indexedDocs = append(indexedDocs, interface{}(doc))
@@ -120,7 +119,7 @@ func commonCsvHeaderFields() []string {
 }
 
 // Common csv data fields.
-func commonCsvDataFeilds(row result.Data) []string{
+func commonCsvDataFeilds(row result.Data) []string {
 	return []string{
 		fmt.Sprint(row.Profile),
 		fmt.Sprint(row.SameNode),
@@ -137,8 +136,8 @@ func commonCsvDataFeilds(row result.Data) []string{
 func writeArchive(cpuarchive, podarchive *csv.Writer, role string, row result.Data, podResults []metrics.PodCPU) error {
 	roleFieldData := []string{role}
 	for _, pod := range podResults {
-		if err := podarchive.Write(append(append(roleFieldData, 
-			commonCsvDataFeilds(row)...), 
+		if err := podarchive.Write(append(append(roleFieldData,
+			commonCsvDataFeilds(row)...),
 			fmt.Sprintf("%s", pod.Name),
 			fmt.Sprintf("%f", pod.Value),
 		)); err != nil {
@@ -150,7 +149,7 @@ func writeArchive(cpuarchive, podarchive *csv.Writer, role string, row result.Da
 	if role == "Server" {
 		cpu = row.ServerMetrics
 	}
-	if err := cpuarchive.Write(append(append(roleFieldData, 
+	if err := cpuarchive.Write(append(append(roleFieldData,
 		commonCsvDataFeilds(row)...),
 		fmt.Sprintf("%f", cpu.Idle),
 		fmt.Sprintf("%f", cpu.User),
@@ -183,8 +182,8 @@ func WritePromCSVResult(r result.ScenarioResults) error {
 	podarchive := csv.NewWriter(podfp)
 	defer podarchive.Flush()
 	roleField := []string{"Role"}
-	cpudata := append(append(roleField, 
-		commonCsvHeaderFields()...), 
+	cpudata := append(append(roleField,
+		commonCsvHeaderFields()...),
 		"Idle CPU",
 		"User CPU",
 		"System CPU",

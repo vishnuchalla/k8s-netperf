@@ -9,8 +9,8 @@ import (
 	apiv1 "k8s.io/api/core/v1"
 
 	"github.com/jtaleric/k8s-netperf/pkg/config"
-	log "github.com/jtaleric/k8s-netperf/pkg/logging"
 	"github.com/jtaleric/k8s-netperf/pkg/sample"
+	log "github.com/vishnuchalla/perfscale-go-commons/logger"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"

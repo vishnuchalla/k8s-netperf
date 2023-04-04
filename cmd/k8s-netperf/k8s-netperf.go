@@ -12,10 +12,10 @@ import (
 	"github.com/jtaleric/k8s-netperf/pkg/archive"
 	"github.com/jtaleric/k8s-netperf/pkg/config"
 	"github.com/jtaleric/k8s-netperf/pkg/k8s"
-	log "github.com/jtaleric/k8s-netperf/pkg/logging"
 	"github.com/jtaleric/k8s-netperf/pkg/metrics"
 	"github.com/jtaleric/k8s-netperf/pkg/netperf"
 	result "github.com/jtaleric/k8s-netperf/pkg/results"
+	log "github.com/vishnuchalla/perfscale-go-commons/logger"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
@@ -43,7 +43,7 @@ func main() {
 	}
 
 	if *debug {
-		log.SetDebug()
+		log.SetLogLevel("debug")
 	}
 
 	cfg, err := config.ParseConf(*cfgfile)

@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/jtaleric/k8s-netperf/pkg/config"
-	log "github.com/jtaleric/k8s-netperf/pkg/logging"
 	"github.com/jtaleric/k8s-netperf/pkg/metrics"
+	log "github.com/vishnuchalla/perfscale-go-commons/logger"
 	appsv1 "k8s.io/api/apps/v1"
 	apiv1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -147,7 +147,7 @@ func BuildSUT(client *kubernetes.Clientset, s *config.PerfScenarios) error {
 		if num_nodes > 1 {
 			cdpAcross.NodeAffinity = apiv1.NodeAffinity{
 				PreferredDuringSchedulingIgnoredDuringExecution: zoneNodeSelectorExpression,
-				RequiredDuringSchedulingIgnoredDuringExecution: workerNodeSelectorExpression,
+				RequiredDuringSchedulingIgnoredDuringExecution:  workerNodeSelectorExpression,
 			}
 		} else {
 			cdpAcross.NodeAffinity = apiv1.NodeAffinity{
@@ -193,7 +193,7 @@ func BuildSUT(client *kubernetes.Clientset, s *config.PerfScenarios) error {
 		if num_nodes > 1 {
 			affinity = apiv1.NodeAffinity{
 				PreferredDuringSchedulingIgnoredDuringExecution: zoneNodeSelectorExpression,
-				RequiredDuringSchedulingIgnoredDuringExecution: workerNodeSelectorExpression,
+				RequiredDuringSchedulingIgnoredDuringExecution:  workerNodeSelectorExpression,
 			}
 		} else {
 			affinity = apiv1.NodeAffinity{

@@ -7,8 +7,8 @@ import (
 
 	apiv1 "k8s.io/api/core/v1"
 
-	log "github.com/jtaleric/k8s-netperf/pkg/logging"
 	"github.com/jtaleric/k8s-netperf/pkg/metrics"
+	log "github.com/vishnuchalla/perfscale-go-commons/logger"
 	"gopkg.in/yaml.v2"
 	"k8s.io/client-go/rest"
 )
