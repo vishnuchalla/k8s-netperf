@@ -41,7 +41,7 @@ require (
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
 	github.com/openshift/api v0.0.0-20230111143458-54592eea5539 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/vishnuchalla/perfscale-go-commons v0.0.0-20230402185410-82fb3a588f46 // indirect
+	github.com/vishnuchalla/perfscale-go-commons v0.0.0-20230404173523-087c08ac6563 // indirect
 	golang.org/x/net v0.7.0 // indirect
 	golang.org/x/oauth2 v0.5.0 // indirect
 	golang.org/x/sys v0.5.0 // indirect

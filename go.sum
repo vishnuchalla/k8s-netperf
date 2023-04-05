@@ -129,6 +129,8 @@ github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.8.0 h1:pSgiaMZlXftHpm5L7V1+rVB+AZJydKsMxsQBIJw4PKk=
 github.com/vishnuchalla/perfscale-go-commons v0.0.0-20230402185410-82fb3a588f46 h1:DGsk1OzXWgyjvaOWWkJO425U2iYtA9+f29fozT3feBk=
 github.com/vishnuchalla/perfscale-go-commons v0.0.0-20230402185410-82fb3a588f46/go.mod h1:JczDuZOdhtq/v3s7nK/JdPERtsbLlJJDzKCIKganKOE=
+github.com/vishnuchalla/perfscale-go-commons v0.0.0-20230404173523-087c08ac6563 h1:g7Pg6Q8wtFeEgsOkz7z7/ZK6ZQUzCbPOU4bF/gKEyAM=
+github.com/vishnuchalla/perfscale-go-commons v0.0.0-20230404173523-087c08ac6563/go.mod h1:JczDuZOdhtq/v3s7nK/JdPERtsbLlJJDzKCIKganKOE=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
